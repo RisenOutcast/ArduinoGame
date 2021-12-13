@@ -1,2 +1,2 @@
-# ArduinoWebGame
-Arduino Web Game
+# ArduinoGame
+Arduino Game
