@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5092779140685585256}
   - component: {fileID: 5049547434056371819}
   - component: {fileID: -649748898241587310}
+  - component: {fileID: 480512313257102780}
   m_Layer: 0
   m_Name: DeathParticlesProjectileWhite
   m_TagString: Untagged
@@ -4879,3 +4880,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Prefab: {fileID: 2004627348550054655, guid: 5ea0af0fd6435c342a76b83be4401430, type: 3}
+--- !u!114 &480512313257102780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1856070193516151498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9bfe674dc3faf4ea9766a91d930ac5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Time: 2

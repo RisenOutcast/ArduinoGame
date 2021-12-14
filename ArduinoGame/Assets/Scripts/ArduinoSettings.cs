@@ -8,8 +8,6 @@ public class ArduinoSettings : MonoBehaviour
     GameObject MasterObject;
     public Master MasterCode;
 
-    public TMP_Dropdown PortChoices_Dd;
-
     public GameObject SuccessSign;
     public GameObject FailureSign;
 

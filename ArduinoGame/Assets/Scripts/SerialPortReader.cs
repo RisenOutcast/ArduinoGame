@@ -10,17 +10,28 @@ using UnityEngine;
 
 public class SerialPortReader : MonoBehaviour
 {
-    GameObject MasterObject;
+    public static SerialPortReader instance = null;
+
+    public GameObject MasterObject;
     public Master MasterCode;
+    public string LatestRcMsg = "";
 
     SerialPort SerPort;
     float Delay;
 
+    void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(gameObject);
+
+        DontDestroyOnLoad(this.gameObject);
+    }
+
     // Use this for initialization
     void Start()
     {
-        if (MasterObject == null)
-            MasterObject = GameObject.FindWithTag("Master");
         MasterCode = MasterObject.GetComponent<Master>();
 
         string PortName = "";
@@ -42,21 +53,34 @@ public class SerialPortReader : MonoBehaviour
             SerPort.ReadTimeout = 100;
             SerPort.Handshake = Handshake.None;
         }
+
+        Debug.Log(PortName);
     }
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (Time.time > Delay)
+        try
         {
-            if (!SerPort.IsOpen)
+            if (Time.time > Delay)
             {
-                SerPort.Open();
+                if (!SerPort.IsOpen)
+                {
+                    SerPort.Open();
+                    MasterCode.ArduinoConnectionActive = false;
+                }
+                if (SerPort.IsOpen)
+                {
+                    LatestRcMsg = SerPort.ReadLine();
+                    MasterCode.ArduinoConnectionActive = true;
+                }
+                Delay = Time.time + 0.3f;
+                SerPort.DiscardOutBuffer();
+                SerPort.DiscardInBuffer();
             }
-            if (SerPort.IsOpen)
-            {
-                Debug.Log(SerPort.ReadLine());
-            }
-            Delay = Time.time + 0.2f;
+        }
+        catch (Exception)
+        {
+
         }
     }
 

@@ -27,6 +27,9 @@ public class Player : MonoBehaviour
     public GameObject GroundParticle_FrontLeft;
     public GameObject GroundParticle_FrontRight;
 
+    public GameObject MasterObject;
+    public Master MasterCode;
+
     bool Rotating = false;
     bool Moving = false;
 
@@ -43,6 +46,9 @@ public class Player : MonoBehaviour
         GroundParticle_BackRight.SetActive(false);
         GroundParticle_FrontLeft.SetActive(false);
         GroundParticle_FrontRight.SetActive(false);
+        //if (MasterObject = null)
+            //MasterObject = GameObject.FindGameObjectWithTag("Master");
+        //MasterCode = MasterObject.GetComponent<Master>();
     }
 
     // Update is called once per frame
@@ -55,8 +61,12 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //MoveHorizontal(horizontalMove * Time.fixedDeltaTime);
-        //MoveVertical(verticalMove * Time.fixedDeltaTime);
+        //if(MasterCode = null)
+            //MasterCode = MasterObject.GetComponent<Master>();
+
+        if (MasterCode.ArduinoInput.MoveForward)
+            verticalMove = 3;
+           
         Move(verticalMove * Time.fixedDeltaTime);
         Rotate(horizontalMove * Time.fixedDeltaTime);
 

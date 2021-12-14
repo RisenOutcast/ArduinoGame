@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 210464092678967473}
   - component: {fileID: 4589641105460133703}
+  - component: {fileID: 5807032145351445730}
   m_Layer: 0
   m_Name: BlueLight
   m_TagString: Untagged
@@ -109,3 +110,16 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &5807032145351445730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2004627348550054655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9bfe674dc3faf4ea9766a91d930ac5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Time: 2

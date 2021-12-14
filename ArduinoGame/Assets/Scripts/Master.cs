@@ -14,6 +14,9 @@ public class Master : MonoBehaviour
     public string SerialPortName = "";
 
     public bool ArduinoConnectionActive = false;
+    public GameObject PortReader_Obj;
+    public SerialPortReader SRP_Code;
+    public ArduinoToInput ArduinoInput;
 
     // Start is called before the first frame update
     void Start()
