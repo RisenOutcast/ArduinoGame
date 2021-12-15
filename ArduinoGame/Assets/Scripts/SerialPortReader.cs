@@ -84,7 +84,7 @@ public class SerialPortReader : MonoBehaviour
         }
     }
 
-    void port_SendData(int Data)
+    public void port_SendData(int Data)
     {
         SerPort.Write(Data.ToString());
     }

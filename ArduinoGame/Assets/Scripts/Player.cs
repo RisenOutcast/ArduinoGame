@@ -6,10 +6,6 @@ public class Player : MonoBehaviour
 {
     [Range(0, .3f)] [SerializeField] private float movementSmoothing = .05f;// How much to smooth out the movement
     
-    const float groundedRadius = .2f; // Radius of the overlap circle to determine if grounded
-    const float k_CeilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
-    private Rigidbody2D m_Rigidbody2D;
-    private Vector3 m_Velocity = Vector3.zero;
 
     public float speed = 150f;
     public float RotationSpeed = 100f;
@@ -21,7 +17,7 @@ public class Player : MonoBehaviour
     public GameObject TankSprite;
 
     public GameObject Cannon;
-
+    public GameObject Lights;
     public GameObject GroundParticle_BackLeft;
     public GameObject GroundParticle_BackRight;
     public GameObject GroundParticle_FrontLeft;
@@ -33,10 +29,11 @@ public class Player : MonoBehaviour
     bool Rotating = false;
     bool Moving = false;
 
+
     private void Awake()
     {
-        m_Rigidbody2D = GetComponent<Rigidbody2D>();
         anim = TankSprite.GetComponent<Animator>();
+
     }
 
     // Start is called before the first frame update
@@ -46,9 +43,9 @@ public class Player : MonoBehaviour
         GroundParticle_BackRight.SetActive(false);
         GroundParticle_FrontLeft.SetActive(false);
         GroundParticle_FrontRight.SetActive(false);
-        //if (MasterObject = null)
-            //MasterObject = GameObject.FindGameObjectWithTag("Master");
-        //MasterCode = MasterObject.GetComponent<Master>();
+
+        MasterCode = GameObject.FindGameObjectWithTag("Master").GetComponent<Master>();
+        MasterCode.SRP_Code.port_SendData(0);
     }
 
     // Update is called once per frame
@@ -61,12 +58,29 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //if(MasterCode = null)
-            //MasterCode = MasterObject.GetComponent<Master>();
+        if(MasterCode == null)
+            MasterCode = GameObject.FindGameObjectWithTag("Master").GetComponent<Master>();
+
+        if (MasterCode.EMP)
+        {
+            Lights.SetActive(false);
+            anim.SetBool("Move_Forward", false);
+            return;
+        }
+        else
+        {
+            Lights.SetActive(true);
+        }
 
         if (MasterCode.ArduinoInput.MoveForward)
             verticalMove = 3;
-           
+        if (MasterCode.ArduinoInput.MoveBack)
+            verticalMove = -3;
+        if (MasterCode.ArduinoInput.MoveLeft)
+            horizontalMove = 3;
+        if (MasterCode.ArduinoInput.MoveRight)
+            horizontalMove = -3;
+
         Move(verticalMove * Time.fixedDeltaTime);
         Rotate(horizontalMove * Time.fixedDeltaTime);
 
@@ -79,7 +93,7 @@ public class Player : MonoBehaviour
             MoveCannon(2);
         }
         transform.eulerAngles = Vector3.forward * PlayerRotation;
-        Debug.Log(Cannon.transform.eulerAngles.z);
+        Debug.Log(verticalMove);
     }
 
     public void MoveCannon(float move)
@@ -140,6 +154,20 @@ public class Player : MonoBehaviour
             GroundParticle_BackRight.SetActive(false);
             GroundParticle_FrontLeft.SetActive(false);
             GroundParticle_FrontRight.SetActive(false);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "EnemyProjectile")
+        {
+            MasterCode.Playerhealth--;
+            MasterCode.SRP_Code.port_SendData(1);
+            if (MasterCode.Playerhealth <= 0)
+            {
+                Destroy(gameObject);
+                Destroy(Cannon);
+            }
         }
     }
 }

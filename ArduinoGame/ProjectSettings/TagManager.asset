@@ -8,15 +8,17 @@ TagManager:
   - Wall
   - Collectible
   - Projectile
+  - EnemyProjectile
+  - Enemy
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
-  - 
+  - Enemy
+  - Walls
   - 
   - 
   - 

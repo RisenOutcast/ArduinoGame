@@ -7,6 +7,8 @@ public class Projectile : MonoBehaviour
     public GameObject ParticlesPrefab;
     public int Time = 2;
 
+    public bool IsHolderEnemy = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,13 +27,23 @@ public class Projectile : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        if (collision.tag == "Enemy")
+        if (!IsHolderEnemy)
         {
-            Destroy(gameObject, 0.01f);
+            if (collision.tag == "Enemy")
+            {
+                Destroy(gameObject, 0.01f);
+            }
+            if (collision.tag == "Boss")
+            {
+                Destroy(gameObject, 0.01f);
+            }
         }
-        if (collision.tag == "Boss")
+        else
         {
-            Destroy(gameObject, 0.01f);
+            if (collision.tag == "Player")
+            {
+                Destroy(gameObject, 0.01f);
+            }
         }
     }
 

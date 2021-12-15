@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class Collectible : MonoBehaviour
 {
+    Master MasterCode;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        MasterCode = GameObject.FindGameObjectWithTag("Master").GetComponent<Master>();
     }
 
     // Update is called once per frame
@@ -18,8 +20,11 @@ public class Collectible : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Projectile")
+        if (collision.tag == "Player")
         {
+            MasterCode.Collectables++;
+            if(MasterCode.ArduinoConnectionActive)
+                MasterCode.SRP_Code.port_SendData(3);
             Destroy(gameObject);
         }
     }

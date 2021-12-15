@@ -10,7 +10,8 @@ using UnityEngine;
 public class Master : MonoBehaviour
 {
     public static Master instance = null;
-    public int Playerhealth;
+    public int Playerhealth = 0;
+    public int Collectables = 0;
     public string SerialPortName = "";
 
     public bool ArduinoConnectionActive = false;
@@ -18,10 +19,17 @@ public class Master : MonoBehaviour
     public SerialPortReader SRP_Code;
     public ArduinoToInput ArduinoInput;
 
+    public bool EMP = false;
+    bool SimulateAlreadyRunning = false;
+    public bool GameWon = false;
+    public bool GameLost = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        Playerhealth = 100;
+        Playerhealth = 3;
+        GameWon = false;
+        GameLost = false;
     }
 
     void Awake()
@@ -41,5 +49,18 @@ public class Master : MonoBehaviour
         {
             Playerhealth = 0;
         }
+        if (EMP && !SimulateAlreadyRunning && !ArduinoConnectionActive)
+        {
+            StartCoroutine(SimulateEMP());
+        }
+    }
+
+    IEnumerator SimulateEMP()
+    {
+        SimulateAlreadyRunning = false;
+        yield return new WaitForSeconds(3F);
+
+        EMP = false;
+        SimulateAlreadyRunning = false;
     }
 }

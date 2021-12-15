@@ -11,18 +11,32 @@ public class Shooting : MonoBehaviour
     public float Force = 20f;
     public CameraShake cameraShake;
 
+    public Master MasterCode;
+
+    float Delay;
+
 
     // Start is called before the first frame update
     void Start()
     {
         ShootingParticles.SetActive(false);
+        MasterCode = GameObject.FindGameObjectWithTag("Master").GetComponent<Master>();
+        Delay = Time.time;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1")){
-            Shoot();
+        if (MasterCode.EMP)
+            return;
+
+        if (Input.GetButtonDown("Fire1") || MasterCode.ArduinoInput.Shoot)
+        {
+            if (Time.time > Delay)
+            {
+                Shoot();
+                Delay = Time.time + 0.3f;
+            }
         }
         
     }
