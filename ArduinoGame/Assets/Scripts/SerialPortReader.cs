@@ -21,6 +21,7 @@ public class SerialPortReader : MonoBehaviour
 
     void Awake()
     {
+        // Make sure there is only one instance
         if (instance == null)
             instance = this;
         else if (instance != this)
@@ -46,6 +47,7 @@ public class SerialPortReader : MonoBehaviour
             }
         }
 
+        // Open the port for connection and try reading data.
         SerPort = new SerialPort(PortName, 9600, Parity.None, 8, StopBits.One);
         if (!SerPort.IsOpen)
         {
@@ -74,10 +76,13 @@ public class SerialPortReader : MonoBehaviour
                     MasterCode.ArduinoConnectionActive = true;
                 }
                 Delay = Time.time + 0.3f;
+
+                // Clear up the buffer in case there might be stackking
                 SerPort.DiscardOutBuffer();
                 SerPort.DiscardInBuffer();
             }
         }
+        // There might be timeout exceptions, error don't matter in the situation
         catch (Exception)
         {
 
