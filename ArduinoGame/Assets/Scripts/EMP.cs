@@ -8,20 +8,23 @@ public class EMP : MonoBehaviour
     bool Set = true;
     bool PlayerInRange = false;
     float Delay;
+    bool Triggered = false;
 
     public Master MasterCode;
+    Animator anim;
 
     // Start is called before the first frame update
     void Start()
     {
         MasterCode = GameObject.FindGameObjectWithTag("Master").GetComponent<Master>();
         Delay = Time.time;
+        anim = gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Time.time > Delay)
+        if (Time.time > Delay && Triggered)
         {
             IndicatorLight.SetActive(Set);
             Set = !Set;
@@ -33,7 +36,8 @@ public class EMP : MonoBehaviour
     {
         if (PlayerInRange) { 
             MasterCode.EMP = true;
-            MasterCode.SRP_Code.port_SendData(4);
+            if(MasterCode.ArduinoConnectionActive)
+                MasterCode.SRP_Code.port_SendData(4);
         }   
         Destroy(gameObject);
     }
@@ -41,6 +45,8 @@ public class EMP : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         PlayerInRange = true;
+        Triggered = true;
+        anim.SetBool("Triggered", true);
     }
 
     private void OnTriggerExit2D(Collider2D collision)

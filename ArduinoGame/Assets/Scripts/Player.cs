@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
 
     public float speed = 150f;
     public float RotationSpeed = 100f;
+    public float RotationSpeedArduino = 150f;
     public float PlayerRotation = 0;
 
     float horizontalMove = 0f;
@@ -28,6 +29,9 @@ public class Player : MonoBehaviour
 
     bool Rotating = false;
     bool Moving = false;
+
+    [SerializeField]
+    private Vector2 randomDirection = Vector2.zero;
 
 
     private void Awake()
@@ -73,13 +77,13 @@ public class Player : MonoBehaviour
         }
 
         if (MasterCode.ArduinoInput.MoveForward)
-            verticalMove = 3;
+            verticalMove = 25;
         if (MasterCode.ArduinoInput.MoveBack)
-            verticalMove = -3;
+            verticalMove = -25;
         if (MasterCode.ArduinoInput.MoveLeft)
-            horizontalMove = 3;
+            horizontalMove = -25;
         if (MasterCode.ArduinoInput.MoveRight)
-            horizontalMove = -3;
+            horizontalMove = 25;
 
         Move(verticalMove * Time.fixedDeltaTime);
         Rotate(horizontalMove * Time.fixedDeltaTime);
@@ -92,13 +96,28 @@ public class Player : MonoBehaviour
         {
             MoveCannon(2);
         }
+        if (MasterCode.ArduinoConnectionActive)
+        {
+            MoveCannonPotikka(MasterCode.ArduinoInput.CannonRotation);
+        }
         transform.eulerAngles = Vector3.forward * PlayerRotation;
-        Debug.Log(verticalMove);
     }
 
     public void MoveCannon(float move)
     {
         Cannon.transform.eulerAngles += Vector3.forward * move;
+    }
+
+    public void MoveCannonPotikka(float move)
+    {
+        randomDirection = new Vector2(0, move + 180);
+        Vector2 inputPointerPosition = (Vector2)Cannon.transform.position + randomDirection;
+ 
+        var desiredAngle = Mathf.Atan2(randomDirection.y, randomDirection.x); //* Mathf.Rad2Deg;
+
+        var rotationStep = RotationSpeedArduino * Time.deltaTime;
+
+        Cannon.transform.rotation = Quaternion.RotateTowards(Cannon.transform.rotation, Quaternion.Euler(0, 0, move + 180), rotationStep);
     }
 
     void Move(float move)

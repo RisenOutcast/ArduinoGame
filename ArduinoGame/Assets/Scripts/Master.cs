@@ -23,6 +23,7 @@ public class Master : MonoBehaviour
     bool SimulateAlreadyRunning = false;
     public bool GameWon = false;
     public bool GameLost = false;
+    bool WaitForSignal;
 
     // Start is called before the first frame update
     void Start()
@@ -49,9 +50,17 @@ public class Master : MonoBehaviour
         {
             Playerhealth = 0;
         }
-        if (EMP && !SimulateAlreadyRunning && !ArduinoConnectionActive)
+        if (EMP && !SimulateAlreadyRunning)
         {
             StartCoroutine(SimulateEMP());
+        }
+        if(Collectables >= 3)
+        {
+            GameWon = true;
+        }
+        if(Playerhealth < 1)
+        {
+            GameLost = true;
         }
     }
 

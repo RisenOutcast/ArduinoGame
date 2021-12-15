@@ -9,7 +9,11 @@ public class UI_Handler : MonoBehaviour
     public GameObject[] HealthSlots;
     public GameObject[] DiamondHolders;
 
+    public GameObject WinningStuff;
+    public GameObject LosingStuff;
     Master MasterCode;
+
+    public GameObject[] Enemyes;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +27,9 @@ public class UI_Handler : MonoBehaviour
         {
             Helat.SetActive(true);
         }
+
+        WinningStuff.SetActive(false);
+        LosingStuff.SetActive(false);
     }
 
     // Update is called once per frame
@@ -73,6 +80,22 @@ public class UI_Handler : MonoBehaviour
             for (int i = 0; i < 3; i++)
             {
                 HealthSlots[i].SetActive(false);
+            }
+        }
+        if (MasterCode.GameLost)
+        {
+            LosingStuff.SetActive(true);
+            for (int i = 0; i < Enemyes.Length; i++)
+            {
+                Enemyes[i].SetActive(false);
+            }
+        }
+        if (MasterCode.GameWon)
+        {
+            WinningStuff.SetActive(true);
+            for (int i = 0; i < Enemyes.Length; i++)
+            {
+                Enemyes[i].SetActive(false);
             }
         }
     }

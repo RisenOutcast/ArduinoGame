@@ -89,8 +89,9 @@ public class SerialPortReader : MonoBehaviour
         SerPort.Write(Data.ToString());
     }
 
-    void TestConnection()
+    public void ClearBuffer()
     {
-
+        SerPort.DiscardOutBuffer();
+        SerPort.DiscardInBuffer();
     }
 }
